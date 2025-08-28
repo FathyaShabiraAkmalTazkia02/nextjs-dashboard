@@ -3,6 +3,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import React from 'react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -10,62 +11,78 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-
+    
     // Login dummy, ganti dengan API backend kamu
     if (email === 'admin@example.com' && password === '123456') {
       router.push('/home'); // redirect setelah login sukses
     } else {
       setError('Email atau password salah');
     }
+
+    // TODO: Tambahkan logika login di sini (fetch API, validasi, dsb)
+    console.log({ email, password });
+    // Contoh redirect setelah login berhasil
+    // router.push('/dashboard');
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-sm rounded-lg bg-white p-6 shadow-md"
-      >
-        <h1 className="mb-4 text-2xl font-bold text-center">Login</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-sm">
+        <h1 className="text-2xl font-semibold mb-6 text-center">
+          Please log in to continue.
+        </h1>
 
-        {error && (
-          <p className="mb-2 text-center text-sm text-red-500">{error}</p>
-        )}
+        <form onSubmit={handleLogin} className="space-y-4">
+          {/* Email Input */}
+          <div>
+            <label className="block text-sm font-medium mb-1">Email</label>
+            <div className="relative">
+              <span className="absolute inset-y-0 left-3 flex items-center text-gray-400">
+                @
+              </span>
+              <input
+                type="email"
+                placeholder="Enter your email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full pl-9 pr-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+          </div>
 
-        <div className="mb-4">
-          <label className="mb-1 block text-sm font-medium">Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setEmail(e.target.value)
-            }
-            className="w-full rounded border border-gray-300 p-2 focus:border-blue-500 focus:ring focus:ring-blue-200"
-            required
-          />
-        </div>
+          {/* Password Input */}
+          <div>
+            <label className="block text-sm font-medium mb-1">Password</label>
+            <div className="relative">
+              <span className="absolute inset-y-0 left-3 flex items-center text-gray-400">
+                🔑
+              </span>
+              <input
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full pl-9 pr-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+          </div>
 
-        <div className="mb-4">
-          <label className="mb-1 block text-sm font-medium">Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setPassword(e.target.value)
-            }
-            className="w-full rounded border border-gray-300 p-2 focus:border-blue-500 focus:ring focus:ring-blue-200"
-            required
-          />
-        </div>
+          {/* Error Message */}
+          {error && <p className="text-red-500 text-sm">{error}</p>}
 
-        <button
-          type="submit"
-          className="w-full rounded bg-blue-600 py-2 text-white hover:bg-blue-700"
-        >
-          Login
-        </button>
-      </form>
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
+          >
+            Log in →
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
